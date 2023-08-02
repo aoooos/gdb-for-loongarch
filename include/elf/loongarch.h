@@ -1,0 +1,94 @@
+#ifndef _ELF_LOONG_H
+#define _ELF_LOONG_H
+
+#include "elf/reloc-macros.h"
+#include "libiberty.h"
+
+START_RELOC_NUMBERS (elf_loongarch_reloc_type)
+/* used by the dynamic linker */
+RELOC_NUMBER (R_LARCH_NONE, 0)
+RELOC_NUMBER (R_LARCH_32, 1)
+RELOC_NUMBER (R_LARCH_64, 2)
+RELOC_NUMBER (R_LARCH_RELATIVE, 3)
+RELOC_NUMBER (R_LARCH_COPY, 4)
+RELOC_NUMBER (R_LARCH_JUMP_SLOT, 5)
+RELOC_NUMBER (R_LARCH_TLS_DTPMOD32, 6)
+RELOC_NUMBER (R_LARCH_TLS_DTPMOD64, 7)
+RELOC_NUMBER (R_LARCH_TLS_DTPREL32, 8)
+RELOC_NUMBER (R_LARCH_TLS_DTPREL64, 9)
+RELOC_NUMBER (R_LARCH_TLS_TPREL32, 10)
+RELOC_NUMBER (R_LARCH_TLS_TPREL64, 11)
+RELOC_NUMBER (R_LARCH_IRELATIVE, 12)
+
+/* Reserved for future relocs that the dynamic linker must understand.  */
+
+/* used by the static linker for relocating .text */
+RELOC_NUMBER (R_LARCH_MARK_LA, 20)
+RELOC_NUMBER (R_LARCH_MARK_PCREL, 21)
+
+/* 这个重定位类型将symbol距离重定位位置的pc相对位置偏移量压栈。
+   它against symbol，因为如果是个常数，虽然在no-pic的情况下可以得到结果，但因为
+   重定位位置相对这个常数的偏移量一定很大，八成填不进去；而在pic的情况下，
+   偏移量无法在静态连接时确定。因此我们约定这个重定位不可能against constant */
+RELOC_NUMBER (R_LARCH_SOP_PUSH_PCREL, 22)
+
+/* 这个重定位against a symbol or a constant。它将symbol的运行时绝对地址
+   或常数压栈，因此在pic的情况下会报错。另外我不太清楚常数和ABS段的关系。 */
+RELOC_NUMBER (R_LARCH_SOP_PUSH_ABSOLUTE, 23)
+
+RELOC_NUMBER (R_LARCH_SOP_PUSH_DUP, 24)
+RELOC_NUMBER (R_LARCH_SOP_PUSH_GPREL, 25)
+RELOC_NUMBER (R_LARCH_SOP_PUSH_TLS_TPREL, 26)
+RELOC_NUMBER (R_LARCH_SOP_PUSH_TLS_GOT, 27)
+RELOC_NUMBER (R_LARCH_SOP_PUSH_TLS_GD, 28)
+RELOC_NUMBER (R_LARCH_SOP_PUSH_PLT_PCREL, 29)
+
+RELOC_NUMBER (R_LARCH_SOP_ASSERT, 30)
+RELOC_NUMBER (R_LARCH_SOP_NOT, 31)
+RELOC_NUMBER (R_LARCH_SOP_SUB, 32)
+RELOC_NUMBER (R_LARCH_SOP_SL, 33)
+RELOC_NUMBER (R_LARCH_SOP_SR, 34)
+RELOC_NUMBER (R_LARCH_SOP_ADD, 35)
+RELOC_NUMBER (R_LARCH_SOP_AND, 36)
+RELOC_NUMBER (R_LARCH_SOP_IF_ELSE, 37)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_S_10_5, 38)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_U_10_12, 39)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_S_10_12, 40)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_S_10_16, 41)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_S_10_16_S2, 42)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_S_5_20, 43)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_S_0_5_10_16_S2, 44)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_S_0_10_10_16_S2, 45)
+RELOC_NUMBER (R_LARCH_SOP_POP_32_U, 46)
+
+/* used by the static linker for relocating non .text */
+/* 这几个重定位类型是为了照顾到 ".dword sym1 - sym2" 这种求差的写法。
+   这些重定位类型处理的是连接时地址，一般情况下它们是成对出现的。
+   在直接求负数".dword - sym1"的情况下，R_LARCH_SUBxx会单独出现。但注意，
+   那个位置填进去的是连接时地址。 */
+RELOC_NUMBER (R_LARCH_ADD8, 47)
+RELOC_NUMBER (R_LARCH_ADD16, 48)
+RELOC_NUMBER (R_LARCH_ADD24, 49)
+RELOC_NUMBER (R_LARCH_ADD32, 50)
+RELOC_NUMBER (R_LARCH_ADD64, 51)
+RELOC_NUMBER (R_LARCH_SUB8, 52)
+RELOC_NUMBER (R_LARCH_SUB16, 53)
+RELOC_NUMBER (R_LARCH_SUB24, 54)
+RELOC_NUMBER (R_LARCH_SUB32, 55)
+RELOC_NUMBER (R_LARCH_SUB64, 56)
+
+/* I don't know what it is. Existing in almost all other arch */
+RELOC_NUMBER (R_LARCH_GNU_VTINHERIT, 57)
+RELOC_NUMBER (R_LARCH_GNU_VTENTRY, 58)
+
+END_RELOC_NUMBERS (R_LARCH_count)
+
+
+/* Processor specific flags for the ELF header e_flags field.  */
+
+#define EF_LARCH_ABI		0x0003
+#define EF_LARCH_ABI_LP64	0x0003
+#define EF_LARCH_ABI_XLP32	0x0002
+#define EF_LARCH_ABI_LP32	0x0001
+
+#endif /* _ELF_LOONG_H */
