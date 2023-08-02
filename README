@@ -12,7 +12,18 @@ It is now possible to automatically configure and build a variety of
 tools with one command.  To build all of the tools contained herein,
 run the ``configure'' script here, e.g.:
 
-	./configure 
+	../configure \
+	  --enable-targets=all \
+	  --enable-languages=all \
+	  --enable-multilib \
+	  --enable-interwork \
+	  --with-system-readline \
+	  --disable-nls \
+	  --with-python=/usr/bin/python \
+	  --with-guile=no \
+	  --with-system-gdbinit=/etc/gdb/gdbinit \
+	  --disable-werror
+
 	make
 
 To install them (by default in /usr/local/bin, /usr/local/lib, etc),
