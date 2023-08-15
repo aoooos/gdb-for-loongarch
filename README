@@ -10,7 +10,7 @@ package -- supported targets, how to use it, how to report bugs, etc.
 
 It is now possible to automatically configure and build a variety of
 tools with one command.  To build all of the tools contained herein,
-run the ``configure'' script here, e.g.:
+run the ``configure'' script here:
 
 	../configure \
 	  --enable-targets=all \
